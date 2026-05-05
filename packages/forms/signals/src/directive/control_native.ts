@@ -22,6 +22,7 @@ import {
 import type {FormField} from './form_field';
 import {InputValidityMonitor} from './input_validity_monitor';
 import {
+  formatDateForMinMax,
   getNativeControlValue,
   inputRequiresValidityTracking,
   isInput,
@@ -103,7 +104,13 @@ export function nativeControlCreate(
       if (bindingUpdated(bindings, name, value)) {
         host.setInputOnDirectives(name, value);
         if (parent.elementAcceptsNativeProperty(name)) {
-          setNativeDomProperty(parent.renderer, input, name, value as string | number | undefined);
+          const domValue = formatDateForMinMax(name, value, input.type);
+          setNativeDomProperty(
+            parent.renderer,
+            input,
+            name,
+            domValue as string | number | boolean | undefined,
+          );
         }
       }
     }
